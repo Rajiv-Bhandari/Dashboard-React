@@ -8,6 +8,7 @@ import Register from "./Register";
 import AddProduct from "./AddProduct";
 import UpdateProduct from "./UpdateProduct";
 import Protected from "./Protected";
+import ProductList from "./ProductList";
 
 function App() {
   return (
@@ -16,6 +17,14 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/"
+            element={
+              <Protected>
+                <ProductList />
+              </Protected>
+            }
+          />
           <Route
             path="/add"
             element={

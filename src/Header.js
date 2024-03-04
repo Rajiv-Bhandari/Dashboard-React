@@ -23,6 +23,7 @@ export default function Header() {
           <Nav className="me-auto navbar-wrapper">
             {localStorage.getItem("user-info") ? (
               <>
+                <Link to="/">View Product</Link>
                 <Link to="/add">Add Product</Link>
                 <Link to="/update">Update Product</Link>
               </>
