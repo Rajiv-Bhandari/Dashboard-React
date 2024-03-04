@@ -1,28 +1,47 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Table from "react-bootstrap/Table";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ProductList() {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    // Define an asynchronous function to fetch data
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/list");
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  // Function to fetch data
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/list");
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-    // Call the asynchronous function
+  useEffect(() => {
+    // Call the function to fetch data
     fetchData();
 
     // Return a cleanup function (empty function in this case)
     return () => {};
   }, []);
+
+  // Function to delete an item
+  const deleteOperation = async (id) => {
+    try {
+      // Send delete request
+      await fetch(`http://127.0.0.1:8000/api/delete/${id}`, {
+        method: "DELETE",
+      });
+
+      // Call the function to fetch data again after successful deletion
+      fetchData();
+      toast.success("Product has been deleted!");
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      toast.error("Error delete product. Please try again.");
+    }
+  };
 
   return (
     <div>
@@ -36,6 +55,7 @@ export default function ProductList() {
             <th>Price</th>
             <th>Description</th>
             <th>Image</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -48,14 +68,31 @@ export default function ProductList() {
               <td>
                 <img
                   style={{ width: 100, height: 100 }}
-                  src={"http://127.0.0.1:8000/" + item.file_path}
+                  src={`http://127.0.0.1:8000/${item.file_path}`}
                   alt="image"
                 />
+              </td>
+              <td>
+                <button
+                  style={{ marginTop: 20 }}
+                  className="btn btn-danger"
+                  onClick={() => deleteOperation(item.id)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
     </div>
   );
 }

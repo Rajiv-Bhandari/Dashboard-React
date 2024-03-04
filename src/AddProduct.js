@@ -9,6 +9,8 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import Header from "./Header";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AddProduct() {
   const [name, setName] = useState("");
@@ -23,12 +25,20 @@ function AddProduct() {
     formData.append("price", price);
     formData.append("name", name);
     formData.append("description", description);
-    let result = await fetch("http://127.0.0.1:8000/api/addproduct", {
-      method: "POST",
-      body: formData,
-    });
-    alert("Product has been saved!");
+
+    try {
+      let result = await fetch("http://127.0.0.1:8000/api/addproduct", {
+        method: "POST",
+        body: formData,
+      });
+      result = await result.json();
+      toast.success("Product has been saved!");
+    } catch (error) {
+      console.error("Error saving product:", error);
+      toast.error("Error saving product. Please try again.");
+    }
   }
+
   return (
     <>
       <Header />
@@ -36,11 +46,8 @@ function AddProduct() {
         fluid
         className="p-4 background-radial-gradient overflow-hidden"
       >
-        <MDBRow>
-          <MDBCol
-            md="6"
-            className="text-center text-md-start d-flex flex-column justify-content-center"
-          >
+        <MDBRow className="align-items-center">
+          <MDBCol md="6" className="text-center text-md-start mb-4">
             <h1
               className="my-5 display-3 fw-bold ls-tight px-3"
               style={{ color: "#123456" }}
@@ -106,6 +113,14 @@ function AddProduct() {
           </MDBCol>
         </MDBRow>
       </MDBContainer>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
     </>
   );
 }
