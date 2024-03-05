@@ -34,7 +34,7 @@ function App() {
             }
           />
           <Route
-            path="/update"
+            path="/update/:id"
             element={
               <Protected>
                 <UpdateProduct />

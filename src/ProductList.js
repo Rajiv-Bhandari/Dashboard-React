@@ -3,6 +3,7 @@ import Header from "./Header";
 import Table from "react-bootstrap/Table";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 export default function ProductList() {
   const [data, setData] = useState([]);
@@ -74,12 +75,17 @@ export default function ProductList() {
               </td>
               <td>
                 <button
-                  style={{ marginTop: 20 }}
+                  style={{ marginTop: 20, marginRight: 8 }}
                   className="btn btn-danger"
                   onClick={() => deleteOperation(item.id)}
                 >
                   Delete
                 </button>
+                <Link to={`/update/${item.id}`}>
+                  <button style={{ marginTop: 20 }} className="btn btn-success">
+                    Update
+                  </button>
+                </Link>
               </td>
             </tr>
           ))}
