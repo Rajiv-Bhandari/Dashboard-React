@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function UpdateProduct() {
   const navigate = useNavigate();
@@ -9,30 +11,58 @@ function UpdateProduct() {
     name: "",
     price: "",
     description: "",
-    file_path: "",
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (id) {
-          let result = await fetch(`http://127.0.0.1:8000/api/product/${id}`);
-          result = await result.json();
-          setData(result);
-        } else {
-          console.error("Missing id parameter");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+  const fetchData = async () => {
+    try {
+      if (id) {
+        let result = await fetch(`http://127.0.0.1:8000/api/product/${id}`);
+        result = await result.json();
+        setData(result);
+      } else {
+        console.error("Missing id parameter");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [id]);
 
-  const handleUpdate = () => {
-    // Implement your update logic here
-    console.log("Updating product...");
+  const handleUpdate = async () => {
+    try {
+      const updatedData = {
+        name: document.getElementById("productName").value,
+        price: document.getElementById("productPrice").value,
+        description: document.getElementById("productDescription").value,
+      };
+
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/product/update/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Product updated successfully!");
+        // Refetch data after successful update
+        fetchData();
+        toast.success("Product has been updated!");
+        // Redirect to the product details page or show a success message
+        // navigate(`/product/${id}`);
+      } else {
+        console.error("Error updating product.");
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   };
 
   return (
@@ -83,7 +113,7 @@ function UpdateProduct() {
                   className="form-control"
                   id="productDescription"
                   defaultValue={data.description}
-                  rows="3" // Set the number of rows here
+                  rows="3"
                 />
               </div>
               <button
@@ -96,6 +126,14 @@ function UpdateProduct() {
             </form>
           </div>
         </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar
+          closeOnClick
+          pauseOnHover
+          draggable
+        />
       </div>
     </>
   );
