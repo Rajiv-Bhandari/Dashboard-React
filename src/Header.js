@@ -25,6 +25,7 @@ export default function Header() {
               <>
                 <Link to="/">View Product</Link>
                 <Link to="/add">Add Product</Link>
+                <Link to="/search">Search Product</Link>
                 {/* <Link to="/update">Update Product</Link> */}
               </>
             ) : (

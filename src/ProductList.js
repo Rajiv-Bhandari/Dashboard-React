@@ -51,7 +51,7 @@ export default function ProductList() {
       <Table striped>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>S.N</th>
             <th>Name</th>
             <th>Price</th>
             <th>Description</th>
@@ -60,9 +60,9 @@ export default function ProductList() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {data.map((item, index) => (
             <tr key={item.id}>
-              <td>{item.id}</td>
+              <td>{index + 1}</td>
               <td>{item.name}</td>
               <td>{item.price}</td>
               <td>{item.description}</td>

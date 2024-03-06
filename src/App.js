@@ -9,6 +9,7 @@ import AddProduct from "./AddProduct";
 import UpdateProduct from "./UpdateProduct";
 import Protected from "./Protected";
 import ProductList from "./ProductList";
+import SearchProduct from "./SearchProduct";
 
 function App() {
   return (
@@ -38,6 +39,14 @@ function App() {
             element={
               <Protected>
                 <UpdateProduct />
+              </Protected>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <Protected>
+                <SearchProduct />
               </Protected>
             }
           />

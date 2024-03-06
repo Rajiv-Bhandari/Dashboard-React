@@ -55,13 +55,12 @@ function UpdateProduct() {
         // Refetch data after successful update
         fetchData();
         toast.success("Product has been updated!");
-        // Redirect to the product details page or show a success message
-        // navigate(`/product/${id}`);
       } else {
         console.error("Error updating product.");
       }
     } catch (error) {
       console.error("Error updating product:", error);
+      toast.error("Error updating product. Please try again.");
     }
   };
 
