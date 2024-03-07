@@ -10,12 +10,14 @@ import UpdateProduct from "./UpdateProduct";
 import Protected from "./Protected";
 import ProductList from "./ProductList";
 import SearchProduct from "./SearchProduct";
+import Dashboard from "./Dashboard";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path="/home" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
